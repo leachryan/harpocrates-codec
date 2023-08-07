@@ -4,6 +4,9 @@ plugins {
 
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
+
+    // Add the maven publishing plugin
+    id("maven-publish")
 }
 
 repositories {
@@ -30,4 +33,21 @@ tasks.named<Test>("test") {
     useJUnitPlatform()
 }
 
-version = "0.0.1"
+publishing {
+    publications {
+        create<MavenPublication>("default") {
+            from(components["java"])
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/leachryan/harpocrates-codec")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
