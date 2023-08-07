@@ -6,7 +6,7 @@ plugins {
     `java-library`
 
     // Add the maven publishing plugin
-    id("maven-publish")
+    `maven-publish`
 }
 
 repositories {
@@ -46,7 +46,7 @@ publishing {
             url = uri("https://maven.pkg.github.com/leachryan/harpocrates-codec")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                password = System.getenv("PUBLISH_TOKEN")
             }
         }
     }
