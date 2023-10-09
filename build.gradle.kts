@@ -34,20 +34,24 @@ tasks.named<Test>("test") {
 }
 
 publishing {
-    publications {
-        create<MavenPublication>("default") {
-            from(components["java"])
-        }
-    }
-
     repositories {
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/leachryan/harpocrates-codec")
             credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("PUBLISH_TOKEN")
+                username = (project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")).toString()
+                password = (project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")).toString()
             }
         }
     }
+    publications {
+        register<MavenPublication>("gpr") {
+            groupId = "dev.leachryan"
+            artifactId = "harpocrates-codec"
+            version = "0.0.1"
+            from(components["java"])
+        }
+    }
 }
+
+version = "0.0.1"
